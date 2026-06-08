@@ -1,0 +1,432 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+  .owner-section {
+    font-family: 'Inter', sans-serif;
+    padding: 3rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f0f7ff 0%, #fafffe 40%, #f5f0ff 100%);
+    border-radius: var(--border-radius-xl);
+  }
+
+  .bg-shapes { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+
+  .bg-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.07;
+  }
+  .bg-shape-1 { width: 320px; height: 320px; background: #185FA5; top: -80px; right: -60px; }
+  .bg-shape-2 { width: 200px; height: 200px; background: #0F6E56; bottom: -60px; left: -40px; }
+  .bg-shape-3 { width: 120px; height: 120px; background: #534AB7; top: 50%; left: 5%; }
+
+  .floating-icons {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .float-icon {
+    position: absolute;
+    font-size: 22px;
+    opacity: 0.12;
+    color: #185FA5;
+    animation: floatAnim 4s ease-in-out infinite;
+  }
+  .float-icon:nth-child(2) { animation-delay: 1.2s; color: #0F6E56; }
+  .float-icon:nth-child(3) { animation-delay: 2.4s; color: #534AB7; }
+  .float-icon:nth-child(4) { animation-delay: 0.6s; }
+
+  @keyframes floatAnim {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .profile-card {
+    background: rgba(255,255,255,0.82);
+    border: 0.5px solid rgba(24,95,165,0.15);
+    border-radius: 24px;
+    box-shadow: 0 8px 48px rgba(24,95,165,0.09), 0 2px 12px rgba(0,0,0,0.04);
+    padding: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 2.5rem;
+    align-items: center;
+    position: relative;
+    backdrop-filter: blur(8px);
+    max-width: 860px;
+    margin: 0 auto;
+    animation: cardEntrance 0.7s cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  @keyframes cardEntrance {
+    from { opacity: 0; transform: translateY(32px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .image-col { display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
+
+  .photo-frame {
+    width: 220px;
+    height: 260px;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 3px solid rgba(24,95,165,0.18);
+    box-shadow: 0 4px 32px rgba(24,95,165,0.12);
+    background: linear-gradient(145deg, #e6f1fb 0%, #e1f5ee 100%);
+    position: relative;
+    cursor: default;
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .photo-frame:hover {
+    transform: scale(1.03) translateY(-4px);
+    box-shadow: 0 12px 44px rgba(24,95,165,0.2);
+  }
+
+  .photo-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #185FA5;
+  }
+  .photo-placeholder i { font-size: 64px; opacity: 0.5; }
+  .photo-placeholder span { font-size: 12px; color: #378ADD; opacity: 0.7; letter-spacing: 0.06em; }
+
+  .photo-accent {
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #185FA5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+  }
+
+  .badges-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .badge-blue { background: #E6F1FB; color: #0C447C; border: 0.5px solid #B5D4F4; }
+  .badge-green { background: #E1F5EE; color: #085041; border: 0.5px solid #9FE1CB; }
+  .badge-purple { background: #EEEDFE; color: #3C3489; border: 0.5px solid #CECBF6; }
+
+  .social-row { display: flex; gap: 10px; }
+  .social-btn {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    border: 0.5px solid rgba(24,95,165,0.2);
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    color: #378ADD;
+    font-size: 17px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.2s, border-color 0.2s;
+    text-decoration: none;
+  }
+  .social-btn:hover { background: #185FA5; color: white; border-color: #185FA5; transform: translateY(-2px); }
+
+  .content-col { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .top-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #185FA5;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .top-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #185FA5;
+    border-radius: 2px;
+  }
+
+  .owner-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #042C53;
+    line-height: 1.15;
+    margin: 0;
+  }
+  .owner-title {
+    font-size: 15px;
+    color: #185FA5;
+    font-weight: 500;
+    margin: 2px 0 0;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(24,95,165,0.18) 0%, transparent 100%);
+    margin: 0;
+  }
+
+  .quote-block {
+    position: relative;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid #185FA5;
+    background: rgba(24,95,165,0.04);
+    border-radius: 0 10px 10px 0;
+  }
+  .quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    color: #185FA5;
+    opacity: 0.2;
+    line-height: 1;
+    position: absolute;
+    top: -8px;
+    left: 10px;
+  }
+  .bio-text {
+    font-size: 13.5px;
+    color: #444;
+    line-height: 1.75;
+    margin: 0;
+    position: relative;
+  }
+
+  .highlights-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .highlight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: var(--border-radius-md);
+    background: rgba(24,95,165,0.04);
+    border: 0.5px solid rgba(24,95,165,0.1);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .highlight-item:hover { background: rgba(24,95,165,0.08); transform: translateX(2px); }
+  .highlight-icon { font-size: 16px; color: #185FA5; margin-top: 1px; flex-shrink: 0; }
+  .highlight-text { font-size: 12.5px; color: #333; line-height: 1.45; }
+  .highlight-text strong { font-weight: 500; color: #042C53; display: block; font-size: 12px; }
+
+  .signature-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .signature-block { display: flex; flex-direction: column; gap: 2px; }
+  .sig-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #042C53;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+  .sig-label { font-size: 11px; color: #888; letter-spacing: 0.08em; }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: 50px;
+    background: #185FA5;
+    color: white;
+    font-size: 13.5px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+  .cta-btn:hover { background: #0C447C; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(24,95,165,0.28); }
+  .cta-btn:active { transform: translateY(0); }
+
+  .exp-ring {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 3px solid #E6F1FB;
+    background: white;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    box-shadow: 0 2px 12px rgba(24,95,165,0.1);
+    flex-shrink: 0;
+  }
+  .exp-num { font-size: 22px; font-weight: 600; color: #185FA5; line-height: 1; }
+  .exp-sub { font-size: 9px; color: #378ADD; letter-spacing: 0.05em; text-align: center; }
+
+  @media (max-width: 620px) {
+    .profile-card {
+      grid-template-columns: 1fr;
+      padding: 1.75rem 1.25rem;
+      gap: 1.5rem;
+    }
+    .photo-frame { width: 180px; height: 215px; }
+    .owner-name { font-size: 26px; }
+    .highlights-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<h2 class="sr-only">Owner profile section for Sushil Yadav, Founder and Managing Director of Shaurya Nursing Home</h2>
+
+<div class="owner-section">
+
+  <div class="bg-shapes">
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
+    <div class="bg-shape bg-shape-3"></div>
+  </div>
+
+  <div class="floating-icons">
+    <i class="ti ti-heartbeat float-icon" style="top:12%;left:3%" aria-hidden="true"></i>
+    <i class="ti ti-stethoscope float-icon" style="top:70%;right:3%" aria-hidden="true"></i>
+    <i class="ti ti-pill float-icon" style="top:40%;right:8%" aria-hidden="true"></i>
+    <i class="ti ti-first-aid-kit float-icon" style="bottom:10%;left:10%" aria-hidden="true"></i>
+  </div>
+
+  <div class="profile-card">
+
+    <div class="image-col">
+
+      <div class="photo-frame">
+        <div class="photo-placeholder">
+          <i class="ti ti-user-circle" aria-hidden="true"></i>
+          <span>Owner Photo</span>
+        </div>
+        <div class="photo-accent" aria-hidden="true">
+          <i class="ti ti-shield-check"></i>
+        </div>
+      </div>
+
+      <div class="badges-row">
+        <span class="badge badge-blue" aria-label="15 plus years experience">
+          <i class="ti ti-award" style="font-size:13px" aria-hidden="true"></i> 15+ Years
+        </span>
+        <span class="badge badge-green">
+          <i class="ti ti-certificate" style="font-size:13px" aria-hidden="true"></i> Leadership
+        </span>
+      </div>
+
+      <div class="exp-ring" aria-label="15 plus years of experience">
+        <span class="exp-num">15+</span>
+        <span class="exp-sub">YRS EXP.</span>
+      </div>
+
+      <div class="social-row" role="list" aria-label="Social media links">
+        <a class="social-btn" href="#" role="listitem" aria-label="LinkedIn profile">
+          <i class="ti ti-brand-linkedin" aria-hidden="true"></i>
+        </a>
+        <a class="social-btn" href="#" role="listitem" aria-label="Facebook profile">
+          <i class="ti ti-brand-facebook" aria-hidden="true"></i>
+        </a>
+        <a class="social-btn" href="#" role="listitem" aria-label="Twitter profile">
+          <i class="ti ti-brand-twitter" aria-hidden="true"></i>
+        </a>
+        <a class="social-btn" href="#" role="listitem" aria-label="Email">
+          <i class="ti ti-mail" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
+
+    <div class="content-col">
+
+      <div>
+        <p class="top-label">Founder & Managing Director</p>
+        <h1 class="owner-name">Sushil Yadav</h1>
+        <p class="owner-title">Shaurya Nursing Home &nbsp;·&nbsp; Healthcare Leader</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="quote-block">
+        <span class="quote-mark" aria-hidden="true">"</span>
+        <p class="bio-text">
+          Sushil Yadav is the Founder &amp; Managing Director of Shaurya Nursing Home. With over 15 years of experience in healthcare and home nursing services, he has dedicated his career to delivering compassionate, reliable, and high-quality patient care. His commitment to excellence, professionalism, and patient well-being has helped build trust among countless families. Under his leadership, Shaurya Nursing Home continues to provide personalized healthcare solutions with a focus on dignity, comfort, and quality service.
+        </p>
+      </div>
+
+      <div class="highlights-grid" role="list" aria-label="Areas of expertise">
+        <div class="highlight-item" role="listitem">
+          <i class="ti ti-heartbeat highlight-icon" aria-hidden="true"></i>
+          <div class="highlight-text">
+            <strong>Patient Care</strong>
+            Compassionate & dignified care
+          </div>
+        </div>
+        <div class="highlight-item" role="listitem">
+          <i class="ti ti-home-heart highlight-icon" aria-hidden="true"></i>
+          <div class="highlight-text">
+            <strong>Home Nursing</strong>
+            In-home healthcare services
+          </div>
+        </div>
+        <div class="highlight-item" role="listitem">
+          <i class="ti ti-users highlight-icon" aria-hidden="true"></i>
+          <div class="highlight-text">
+            <strong>Team Leadership</strong>
+            Building trusted care teams
+          </div>
+        </div>
+        <div class="highlight-item" role="listitem">
+          <i class="ti ti-shield-check highlight-icon" aria-hidden="true"></i>
+          <div class="highlight-text">
+            <strong>Quality Assurance</strong>
+            Excellence in every service
+          </div>
+        </div>
+      </div>
+
+      <div class="signature-row">
+        <div class="signature-block">
+          <span class="sig-text">Sushil Yadav</span>
+          <span class="sig-label">FOUNDER &amp; MANAGING DIRECTOR</span>
+        </div>
+        <button class="cta-btn" onclick="sendPrompt('Tell me more about the team at Shaurya Nursing Home')">
+          <i class="ti ti-users" aria-hidden="true"></i>
+          Meet Our Team ↗
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:center; gap:1.5rem; margin-top:1.5rem; flex-wrap:wrap;">
+    <span class="badge badge-purple" style="padding:7px 16px; font-size:12px;">
+      <i class="ti ti-stethoscope" style="font-size:14px" aria-hidden="true"></i> &nbsp;Healthcare &amp; Home Nursing
+    </span>
+    <span class="badge badge-blue" style="padding:7px 16px; font-size:12px;">
+      <i class="ti ti-certificate" style="font-size:14px" aria-hidden="true"></i> &nbsp;Trusted by Thousands of Families
+    </span>
+    <span class="badge badge-green" style="padding:7px 16px; font-size:12px;">
+      <i class="ti ti-heart" style="font-size:14px" aria-hidden="true"></i> &nbsp;Compassion-First Care
+    </span>
+  </div>
+
+</div>

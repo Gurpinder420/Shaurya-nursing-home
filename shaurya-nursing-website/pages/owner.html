@@ -1,0 +1,548 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Owner Profile – Shaurya Nursing Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:   #0a5c8a;
+      --primary-light: #1a8abf;
+      --accent:    #00c6a7;
+      --gold:      #d4a843;
+      --light-bg:  #f0f7fc;
+      --white:     #ffffff;
+      --text-dark: #1a2c3d;
+      --text-mid:  #4a6278;
+      --text-light:#7a95a8;
+      --shadow:    0 20px 60px rgba(10,92,138,.12);
+      --radius:    24px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light-bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    /* ── SECTION WRAPPER ── */
+    .owner-section {
+      position: relative;
+      width: 100%;
+      padding: 80px 20px;
+      overflow: hidden;
+    }
+
+    /* ── ANIMATED BG BLOBS ── */
+    .bg-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: .18;
+      animation: blobFloat 8s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    .bg-blob-1 { width: 480px; height: 480px; background: var(--primary); top: -120px; left: -100px; animation-delay: 0s; }
+    .bg-blob-2 { width: 360px; height: 360px; background: var(--accent);  bottom: -80px; right: -80px; animation-delay: 3s; }
+    .bg-blob-3 { width: 260px; height: 260px; background: var(--gold);    top: 50%; left: 55%; animation-delay: 1.5s; }
+
+    @keyframes blobFloat { from { transform: scale(1) translate(0,0); } to { transform: scale(1.12) translate(20px,20px); } }
+
+    /* ── FLOATING ICONS ── */
+    .floating-icon {
+      position: absolute;
+      opacity: .07;
+      font-size: 2.4rem;
+      color: var(--primary);
+      animation: iconDrift 6s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    .fi-1  { top:  8%; left:  5%; animation-delay: 0s;   }
+    .fi-2  { top: 18%; right: 6%; animation-delay: 1.2s; }
+    .fi-3  { top: 68%; left:  3%; animation-delay: 2s;   }
+    .fi-4  { bottom:10%; right:4%; animation-delay: .7s;  }
+    .fi-5  { top: 42%; left: 48%; animation-delay: 1.8s; font-size:1.8rem; }
+    @keyframes iconDrift { from { transform: translateY(0) rotate(0deg); } to { transform: translateY(-22px) rotate(12deg); } }
+
+    /* ── MAIN CARD ── */
+    .profile-card {
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .profile-card.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── LEFT PANEL ── */
+    .card-left {
+      position: relative;
+      background: linear-gradient(160deg, var(--primary) 0%, var(--primary-light) 60%, var(--accent) 100%);
+      padding: 50px 36px 46px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      overflow: hidden;
+    }
+    .card-left::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='28'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    }
+
+    /* Cross watermark */
+    .left-cross {
+      position: absolute;
+      bottom: -40px; right: -40px;
+      width: 220px; height: 220px;
+      opacity: .06;
+    }
+    .left-cross::before, .left-cross::after {
+      content: '';
+      position: absolute;
+      background: white;
+      border-radius: 4px;
+    }
+    .left-cross::before { width: 40%; height: 100%; left: 30%; top: 0; }
+    .left-cross::after  { width: 100%; height: 40%; top: 30%; left: 0; }
+
+    /* photo ring */
+    .photo-ring {
+      position: relative;
+      width: 220px; height: 220px;
+      flex-shrink: 0;
+    }
+    .photo-ring::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 3px dashed rgba(255,255,255,.5);
+      animation: spin 20s linear infinite;
+    }
+    .photo-ring::after {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.2);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .owner-photo-wrap {
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 5px solid rgba(255,255,255,.9);
+      box-shadow: 0 12px 40px rgba(0,0,0,.3);
+      cursor: pointer;
+      transition: transform .4s ease, box-shadow .4s ease;
+    }
+    .owner-photo-wrap:hover { transform: scale(1.05); box-shadow: 0 18px 55px rgba(0,0,0,.4); }
+    .owner-photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .owner-photo-wrap:hover img { transform: scale(1.08); }
+
+    /* Placeholder silhouette when no real photo */
+    .photo-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(160deg, #c8dce8 0%, #a0bfd4 100%);
+      display: flex; align-items: flex-end; justify-content: center;
+      overflow: hidden;
+    }
+    .photo-placeholder svg { width: 78%; opacity: .85; }
+
+    .owner-name-left {
+      text-align: center;
+      position: relative; z-index: 1;
+    }
+    .owner-name-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem; font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      text-shadow: 0 2px 8px rgba(0,0,0,.2);
+    }
+    .owner-name-left p {
+      font-size: .85rem; font-weight: 500;
+      color: rgba(255,255,255,.8);
+      margin-top: 4px;
+      letter-spacing: .5px;
+    }
+
+    /* badges */
+    .badges { display: flex; flex-direction: column; gap: 10px; width: 100%; position: relative; z-index: 1; }
+    .badge {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 50px;
+      padding: 9px 16px;
+      color: #fff;
+      font-size: .8rem; font-weight: 600;
+      transition: background .3s, transform .3s;
+    }
+    .badge:hover { background: rgba(255,255,255,.25); transform: translateX(4px); }
+    .badge i { font-size: 1rem; color: var(--gold); }
+
+    /* social */
+    .social-row { display: flex; gap: 12px; position: relative; z-index: 1; }
+    .social-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem;
+      text-decoration: none;
+      transition: background .3s, transform .3s, box-shadow .3s;
+    }
+    .social-btn:hover { background: rgba(255,255,255,.35); transform: translateY(-4px) scale(1.1); box-shadow: 0 8px 20px rgba(0,0,0,.2); }
+
+    /* ── RIGHT PANEL ── */
+    .card-right {
+      padding: 52px 50px 46px 48px;
+      display: flex; flex-direction: column; gap: 24px;
+      overflow: auto;
+    }
+
+    /* header */
+    .right-header { display: flex; flex-direction: column; gap: 6px; }
+    .tag-label {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: linear-gradient(90deg, #e8f7f4, #dff0fb);
+      color: var(--primary);
+      font-size: .72rem; font-weight: 700;
+      letter-spacing: 1.4px; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 50px;
+      border: 1px solid rgba(10,92,138,.15);
+      width: fit-content;
+    }
+    .tag-label i { color: var(--accent); }
+
+    .right-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem; font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.15;
+    }
+    .right-header h1 span { color: var(--primary); }
+    .right-header .sub-role {
+      font-size: .95rem; font-weight: 500;
+      color: var(--text-mid);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .right-header .sub-role::before {
+      content: '';
+      display: inline-block;
+      width: 32px; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 2px;
+    }
+
+    /* quote */
+    .quote-block {
+      position: relative;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e8f7f4 100%);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 14px 14px 0;
+      padding: 18px 20px 18px 24px;
+    }
+    .quote-block .q-icon {
+      font-size: 3rem; line-height: 1;
+      color: var(--primary); opacity: .15;
+      font-family: Georgia, serif;
+      position: absolute; top: 6px; left: 10px;
+    }
+    .quote-block p {
+      font-size: .93rem; line-height: 1.75;
+      color: var(--text-mid);
+      font-style: italic;
+      position: relative; z-index: 1;
+    }
+
+    /* stats row */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 14px;
+    }
+    .stat-card {
+      background: var(--light-bg);
+      border-radius: 16px;
+      padding: 16px 14px;
+      text-align: center;
+      border: 1px solid rgba(10,92,138,.08);
+      transition: transform .3s, box-shadow .3s, background .3s;
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(10,92,138,.12);
+      background: white;
+    }
+    .stat-card .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.65rem; font-weight: 800;
+      color: var(--primary);
+      display: block;
+    }
+    .stat-card .stat-num span { color: var(--accent); }
+    .stat-card .stat-label { font-size: .72rem; font-weight: 600; color: var(--text-light); letter-spacing: .5px; text-transform: uppercase; }
+
+    /* expertise */
+    .expertise-grid { display: flex; flex-wrap: wrap; gap: 9px; }
+    .exp-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: white;
+      border: 1px solid rgba(10,92,138,.14);
+      border-radius: 50px;
+      padding: 6px 14px;
+      font-size: .78rem; font-weight: 600;
+      color: var(--text-dark);
+      transition: all .3s;
+    }
+    .exp-chip i { color: var(--primary); font-size: .8rem; }
+    .exp-chip:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); }
+    .exp-chip:hover i { color: white; }
+
+    /* signature + CTA */
+    .bottom-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      border-top: 1px solid rgba(10,92,138,.1);
+      padding-top: 22px;
+      flex-wrap: wrap;
+    }
+    .sig-block { display: flex; flex-direction: column; gap: 4px; }
+    .sig-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--primary);
+      font-style: italic;
+      letter-spacing: .5px;
+    }
+    .sig-sub { font-size: .72rem; color: var(--text-light); font-weight: 600; letter-spacing: .8px; text-transform: uppercase; }
+
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      padding: 13px 28px;
+      border-radius: 50px;
+      font-weight: 700; font-size: .88rem;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(10,92,138,.35);
+      transition: transform .3s, box-shadow .3s, background .3s;
+      letter-spacing: .3px;
+      cursor: pointer; border: none;
+    }
+    .cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 32px rgba(10,92,138,.45);
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+    }
+    .cta-btn i { transition: transform .3s; }
+    .cta-btn:hover i { transform: translateX(4px); }
+
+    /* ── DECORATIVE CORNER ── */
+    .deco-corner {
+      position: absolute;
+      top: 0; right: 0;
+      width: 100px; height: 100px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .deco-corner::before {
+      content: '';
+      position: absolute;
+      top: -50px; right: -50px;
+      width: 100px; height: 100px;
+      background: linear-gradient(135deg, var(--accent), var(--primary-light));
+      border-radius: 50%;
+      opacity: .12;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .profile-card { grid-template-columns: 1fr; }
+      .card-left { padding: 44px 28px 36px; flex-direction: column; align-items: center; }
+      .card-right { padding: 38px 28px 38px; }
+      .right-header h1 { font-size: 1.9rem; }
+    }
+    @media (max-width: 560px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .right-header h1 { font-size: 1.6rem; }
+      .card-right { padding: 28px 18px 28px; gap: 18px; }
+      .bottom-row { flex-direction: column; align-items: flex-start; }
+      .cta-btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="owner-section">
+
+  <!-- BG Blobs -->
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+
+  <!-- Floating icons -->
+  <i class="fa-solid fa-heart-pulse floating-icon fi-1"></i>
+  <i class="fa-solid fa-stethoscope floating-icon fi-2"></i>
+  <i class="fa-solid fa-staff-snake floating-icon fi-3"></i>
+  <i class="fa-solid fa-hospital floating-icon fi-4"></i>
+  <i class="fa-solid fa-syringe floating-icon fi-5"></i>
+
+  <!-- CARD -->
+  <div class="profile-card" id="profileCard">
+
+    <!-- LEFT -->
+    <div class="card-left">
+      <div class="left-cross"></div>
+
+      <!-- Photo -->
+      <div class="photo-ring">
+        <div class="owner-photo-wrap">
+          <!-- Elegant SVG silhouette (replace src with real photo) -->
+          <div class="photo-placeholder">
+            <svg viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Body / suit -->
+              <rect x="30" y="145" width="140" height="95" rx="14" fill="#2a6a9a" opacity=".85"/>
+              <!-- Shirt / tie details -->
+              <rect x="88" y="145" width="24" height="70" rx="4" fill="white" opacity=".18"/>
+              <polygon points="100,158 93,190 107,190" fill="#1a4f7a" opacity=".4"/>
+              <!-- Head -->
+              <ellipse cx="100" cy="108" rx="42" ry="50" fill="#c8a882"/>
+              <!-- Hair -->
+              <ellipse cx="100" cy="70" rx="44" ry="24" fill="#2c1a0e"/>
+              <!-- Face features -->
+              <ellipse cx="86" cy="108" rx="5" ry="6" fill="#8b6a4a"/>
+              <ellipse cx="114" cy="108" rx="5" ry="6" fill="#8b6a4a"/>
+              <path d="M87 125 Q100 134 113 125" stroke="#8b4a3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <!-- Collar -->
+              <path d="M70 145 L88 160 L100 145 L112 160 L130 145" stroke="white" stroke-width="2" fill="none" opacity=".6"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="owner-name-left">
+        <h2>Sushil Yadav</h2>
+        <p>Founder & Managing Director</p>
+      </div>
+
+      <!-- Badges -->
+      <div class="badges">
+        <div class="badge"><i class="fa-solid fa-award"></i>15+ Years Experience</div>
+        <div class="badge"><i class="fa-solid fa-crown"></i>Visionary Leadership</div>
+        <div class="badge"><i class="fa-solid fa-shield-heart"></i>Healthcare Excellence</div>
+        <div class="badge"><i class="fa-solid fa-certificate"></i>Certified Professional</div>
+      </div>
+
+      <!-- Social -->
+      <div class="social-row">
+        <a href="#" class="social-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="#" class="social-btn" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" class="social-btn" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" class="social-btn" title="Email"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="card-right">
+      <div class="deco-corner"></div>
+
+      <div class="right-header">
+        <span class="tag-label"><i class="fa-solid fa-circle-check"></i>Founder's Profile</span>
+        <h1><span>Sushil</span> Yadav</h1>
+        <div class="sub-role">Founder & Managing Director, Shaurya Nursing Home</div>
+      </div>
+
+      <div class="quote-block">
+        <span class="q-icon">"</span>
+        <p>Sushil Yadav is the Founder &amp; Managing Director of <strong>Shaurya Nursing Home</strong>. With over 15 years of experience in healthcare and home nursing services, he has dedicated his career to delivering compassionate, reliable, and high-quality patient care. His commitment to excellence, professionalism, and patient well-being has helped build trust among countless families. Under his leadership, Shaurya Nursing Home continues to provide personalized healthcare solutions with a focus on <strong>dignity, comfort, and quality service</strong>.</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-num">15<span>+</span></span>
+          <span class="stat-label">Years Experience</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">10<span>K+</span></span>
+          <span class="stat-label">Patients Served</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">98<span>%</span></span>
+          <span class="stat-label">Satisfaction Rate</span>
+        </div>
+      </div>
+
+      <!-- Expertise -->
+      <div class="expertise-grid">
+        <span class="exp-chip"><i class="fa-solid fa-heart-pulse"></i>Patient Care</span>
+        <span class="exp-chip"><i class="fa-solid fa-house-medical"></i>Home Nursing</span>
+        <span class="exp-chip"><i class="fa-solid fa-user-nurse"></i>Clinical Management</span>
+        <span class="exp-chip"><i class="fa-solid fa-staff-snake"></i>Healthcare Operations</span>
+        <span class="exp-chip"><i class="fa-solid fa-hand-holding-heart"></i>Compassionate Care</span>
+        <span class="exp-chip"><i class="fa-solid fa-chart-line"></i>Strategic Leadership</span>
+      </div>
+
+      <!-- Signature + CTA -->
+      <div class="bottom-row">
+        <div class="sig-block">
+          <span class="sig-text">Sushil Yadav</span>
+          <span class="sig-sub">Founder & Managing Director</span>
+        </div>
+        <button class="cta-btn">Meet Our Team <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+
+    </div><!-- /card-right -->
+  </div><!-- /profile-card -->
+</section>
+
+<script>
+  // Scroll-reveal entrance
+  const card = document.getElementById('profileCard');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  observer.observe(card);
+
+  // Badge stagger
+  document.querySelectorAll('.badge').forEach((b,i) => {
+    b.style.opacity = '0';
+    b.style.transform = 'translateX(-20px)';
+    b.style.transition = 'opacity .5s ease, transform .5s ease';
+    setTimeout(() => card.classList.contains('visible') ? applyBadge(b) : card.addEventListener('transitionend', () => applyBadge(b), {once:true}), 200 + i*120);
+    function applyBadge(el){ el.style.opacity='1'; el.style.transform='translateX(0)'; }
+  });
+
+  // Trigger once if already in view
+  const rect = card.getBoundingClientRect();
+  if(rect.top < window.innerHeight) card.classList.add('visible');
+</script>
+</body>
+</html>
